@@ -58,7 +58,7 @@ ggplot(data = res.malm.raw$fs, aes(x = Period, y = FS, group = rep(loc, 10), col
         legend.justification = c(1, 1), legend.position = c(1, 1))
 
 
-# Footnote 3. Industrial demand changes / FS ~ Industrial demand changes
+# Footnote 4. Industrial demand changes / FS ~ Industrial demand changes
 IU.2010.2013 <- (df.3d[,6, 7] - df.3d[,6,4])/df.3d[,6,4]*100/3
 IU.2014.2016 <- (df.3d[,6,10] - df.3d[,6,8])/df.3d[,6,8]*100/3
 aggregate(IU.2014.2016, list(loc), mean, na.rm = T)
