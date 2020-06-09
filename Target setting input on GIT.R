@@ -39,7 +39,7 @@ print(cbind(Loc  = rep(levels(loc), 3), format(round(table.1[-c(1:3),]), big.mar
 # Figure 1.1. Frontier shift
 n.period     <- dim(df.3d)[3] - 1
 res.malm.raw <- roc.malmquist(df.3d[,id.x,], df.3d[,id.y,], unique(df.2d$Year), "dea", rts, ori)
-res.malm.avg <- data.frame(Period = rep(levels(res.malm.raw$cu$Period), 3),
+res.malm.avg <- data.frame(Period = rep(unique(res.malm.raw$cu$Period), 3),
                            Loc    = factor(rep(levels(loc), each = n.period), levels = levels(loc)),
                            CU     = aggregate(res.malm.raw$cu$CU, list(res.malm.raw$cu$Period, rep(loc, n.period)), mean)$x,
                            FS     = aggregate(res.malm.raw$fs$FS, list(res.malm.raw$fs$Period, rep(loc, n.period)), mean)$x,
@@ -54,7 +54,7 @@ ggplot(data = res.malm.raw$fs, aes(x = Period, y = FS, group = rep(loc, n.period
         legend.title         = element_blank(),
         legend.background    = element_rect(fill = "transparent", colour = "transparent"), 
         legend.direction     = "horizontal", 
-        legend.justification = c(1, 1), legend.position = c(1, 1))
+        legend.justification = c(1, 1), legend.position = c(0.95, 0.993))
 
 
 # Figure 2. LPG vs LNG (vs Oil) prices
@@ -73,7 +73,7 @@ ggplot(data = na.omit(price.gg), aes(x = Tick, y = Price, group = Type, colour =
         legend.title         = element_blank(),
         legend.background    = element_rect(fill = "transparent", colour = "transparent"), 
         legend.direction     = "horizontal", 
-        legend.justification = c(1, 1), legend.position = c(1, 1))
+        legend.justification = c(1, 1), legend.position = c(0.97, 0.993))
 
 
 # Table 2. Rationale of MI changes
