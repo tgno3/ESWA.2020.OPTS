@@ -168,29 +168,26 @@ dm.dea(df.in[,1:2], df.in[,3], rts, ori)$eff[1]
 
 
 # Table 6. Operational plans
-table.6 <- data.frame(Name               = rep(res.eff.f$Name, each = 2),
-                      Eff.2018           = rep(round(res.eff.f$Eff_2018, 4), each = 2),
-                      Supply.Target.2020 = rep(c("10% increase", "5% increase"), 3),
-                      Beta.SP            = rep(y_f[3:5,,], each = 2) * rep(c(1.10, 1.05), 3),
+table.6 <- data.frame(Name               = rep(res.eff.f$Name, each = 4),
+                      Eff.Target         = rep(res.eff.f$Eff_2018, each = 4) * rep(c(1, 1.1), each = 2, 3),
+                      Supply.Target.2020 = rep(c("5% increase", "10% increase"), 6),
+                      Beta.SP            = rep(y_f[3:5,,], each = 4) * rep(c(1.05, 1.10), 6),
                       Alpha.PP           = NA,
-                      Alpha.OC           = NA,
-                      Validation         = NA)
+                      Alpha.OC           = NA)
 
 for(i in 1:nrow(table.6)){
-  id.dmu.t        <- rep(c(3:5), each = 2)[i]
+  id.dmu.t        <- rep(c(3:5), each = 4)[i]
   delta.t         <- 2 - mean(table.3$MAD.new[table.3$F.Window == 2])
   x_f             <- rbind(df.ex[id.lroc, id.x + 3, drop = F] * ((1/res.foc$roc_local[id.lroc])^delta.t), 
                            df.ex[id.dmu,  id.x + 3, drop = F])
   y_f             <- rbind(df.ex[id.lroc, id.y + 3, drop = F], 
                            df.ex[id.dmu,  id.y + 3, drop = F])
   m.arg           <- list(xdata = x_f, ydata = y_f, rts = rts, dmu = id.dmu.t, 
-                          et    = res.roc$eff_t[id.dmu][id.dmu.t - length(id.lroc)], 
-                          beta  = table.6$Beta[i])
+                          et    = table.6$Eff.Target[i], 
+                          beta  = table.6$Beta.SP[i])
   res.target      <- do.call("target.spec.dea", m.arg)
   table.6[i, 5:6] <- res.target$alpha
-  table.6[i,   7] <- dm.dea(mapply(c, x_f[1:2,,drop = F], table.6[i, 5:6]), 
-                            mapply(c, y_f[1:2,,drop = F], table.6[i, 4]), rts, ori, o = 3)$eff[3]
 }
 
-print(cbind(table.6[,1:3], format(round(table.6[,c(4, 5:6)]), big.mark = ","), 
-            round(table.6[,7, drop = F], 4)), row.names = F)
+print(cbind(table.6[,1], round(table.6[,2, drop = F], 4), table.6[,3], 
+            format(round(table.6[,c(4, 5:6)]), big.mark = ",")), row.names = F)
