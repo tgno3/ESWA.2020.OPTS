@@ -36,7 +36,7 @@ table.1 <- data.frame(Min  = unlist(aggregate(df.2d[, c(id.x, id.y) + 3], by = l
 print(cbind(Loc  = rep(levels(loc), 3), format(round(table.1[-c(1:3),]), big.mark = ",")))
 
 
-# Figure 1.1. Frontier shift
+# Figure 3. Frontier shift
 n.period     <- dim(df.3d)[3] - 1
 res.malm.raw <- roc.malmquist(df.3d[,id.x,], df.3d[,id.y,], unique(df.2d$Year), "dea", rts, ori)
 res.malm.avg <- data.frame(Period = rep(unique(res.malm.raw$cu$Period), 3),
@@ -57,7 +57,7 @@ ggplot(data = res.malm.raw$fs, aes(x = Period, y = FS, group = rep(loc, n.period
         legend.justification = c(1, 1), legend.position = c(0.95, 0.993))
 
 
-# Figure 2. LPG vs LNG (vs Oil) prices
+# Figure 4. LPG vs LNG (vs Oil) prices
 price.gg <- data.frame(Tick  = rep(1:nrow(price), 3),
                        Price = c(price$Dubai_oil*10, price$LNG, price$LPG),
                        Type  = factor(rep(c("Oil", "LNG", "LPG"), each = nrow(price)), levels = c("Oil", "LNG", "LPG")))
@@ -89,7 +89,7 @@ t(matrix(c(round(c(aggregate(IU.2010.2013, list(loc), mean, na.rm = T)$x, mean(I
                          c("IU (2010-2013)","IU (2014-2016)", "IU (2017-2018)"))))
 
 
-# Footnote 4. Regression MI ~ IU
+# Footnote 5. Regression MI ~ IU
 IU.annual.c <- c(df.3d[,6, -1] - df.3d[,6, -12])
 summary(lm(res.malm.raw$fs$FS ~ IU.annual.c), na.rm = T)
 
@@ -158,7 +158,7 @@ print(cbind(res.eff.f[, 1:2],
             SP.Bound = format(round(y.limit), big.mark = ",")))
 
 
-# Footnote 7. Kyungdong and Jeonbuk
+# Footnote 8. Kyungdong and Jeonbuk
 id.in <- id.lroc[1] # 1 for Jeonbuk / 2 for Kyungdong
 x_in  <- df.ex[id.in, id.x + 3, drop = F] * ((1/res.foc$roc_local[id.in])^delta.t)
 y_in  <- df.ex[id.in, id.y + 3, drop = F]
